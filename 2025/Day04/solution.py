@@ -1,9 +1,6 @@
 # Sat Dec  6 08:36:27 PM EST 2025
 
 # read a grid
-from typing import Dict, Tuple
-
-
 with open(0) as f:
     data = f.read().splitlines()
 
@@ -40,7 +37,7 @@ print(p1)
 # Sat Dec  6 08:44:11 PM EST 2025
 # Refactored P1 into a count() method
 
-def count():
+def count() -> int:
     removed = []
     for x in range(COLS):
         for y in range(ROWS):
