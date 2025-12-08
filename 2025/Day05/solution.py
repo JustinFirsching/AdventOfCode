@@ -40,18 +40,20 @@ changed = True
 while changed:
     # Shoutout to ChatGPT for this code... I couldn't figure it out in the
     # moment and didn't want to spend any more time on it.
-    ranges = dict(sorted(ranges.items()))
+    items = sorted(ranges.items(), key=lambda x: x[0])
+
     merged_ranges = {}
-    for start, end in ranges.items():
-        if not merged_ranges:
-            merged_ranges[start] = end
-            continue
-        last_start = list(merged_ranges.keys())[-1]
-        last_end = merged_ranges[last_start]
-        if start <= last_end + 1:
-            merged_ranges[last_start] = max(last_end, end)
+    cur_start, cur_end = items[0]
+
+    for s, e in items[1:]:
+        if s <= cur_end + 1:              # overlaps or touches
+            cur_end = max(cur_end, e)     # extend
         else:
-            merged_ranges[start] = end
+            merged_ranges[cur_start] = cur_end   # commit
+            cur_start, cur_end = s, e     # restart
+
+    merged_ranges[cur_start] = cur_end
+
     changed = len(ranges) != len(merged_ranges)
     ranges = merged_ranges
 
